@@ -34,9 +34,9 @@ jobs:
         cache-dependency-path: ./pnpm-lock.yaml
         node-version: ${{ matrix.node-version }}
         cache: 'pnpm'
-    - run: npm ci
-    - run: npm run build --if-present
-    - run: npm test --if-present
+    - run: pnpm ci
+    - run: pnpm build --if-present
+    - run: pnpm test --if-present
 
   push-image-to-dockerhub:
     runs-on: ubuntu-latest
