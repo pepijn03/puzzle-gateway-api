@@ -20,12 +20,20 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+    
+    - uses: pnpm/action-setup@v3
+      with:
+        version: 8
+        run_install: false
+        standalone: true
+        dest: ~/setup-pnpm 
+    
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
       with:
-        cache-dependency-path: ./package-lock.json
+        cache-dependency-path: ./pnpm-lock.yaml
         node-version: ${{ matrix.node-version }}
-        cache: 'npm'
+        cache: 'pnpm'
     - run: npm ci
     - run: npm run build --if-present
     - run: npm test --if-present
