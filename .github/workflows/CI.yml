@@ -34,7 +34,7 @@ jobs:
         cache-dependency-path: ./pnpm-lock.yaml
         node-version: ${{ matrix.node-version }}
         cache: 'pnpm'
-    - run: pnpm ci
+    - run: pnpm install
     - run: pnpm build --if-present
     - run: pnpm test --if-present
 
