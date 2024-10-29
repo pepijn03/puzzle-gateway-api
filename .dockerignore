@@ -1,8 +1,11 @@
 node_modules
-npm-debug.log
-dockerignore 
-Dockerfile
-build
 .git
-*.md
 .gitignore
+Dockerfile
+docker-compose.yml
+.dockerignore
+example.env
+LICENSE
+.github/*
+*.md
+dist
