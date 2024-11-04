@@ -16,15 +16,15 @@ setupLogging(router);
 const services = [
   {
     route: "/users",
-    target: "http://localhost:3001/users/",
+    target: process.env.USER_BASEURL +  "users/",
   },
   {
     route: "/progress",
-    target: "http://localhost:3002/progess/",
+    target: process.env.PROGRESS_BASEURL +  "/progess/",
   },
   {
     route: "/puzzle",
-    target: "http://localhost:3003/puzzle",
+    target: process.env.PUZZLE_BASEURL +  "/puzzle/",
   },
   // Add more services as needed either deployed or locally.
  ];
