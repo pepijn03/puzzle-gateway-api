@@ -16,7 +16,7 @@ setupLogging(router);
 const services = [
   {
     route: "/users",
-    target: process.env.USER_BASEURL +  "users/",
+    target: process.env.USER_BASEURL +  "/users/",
   },
   {
     route: "/progress",
@@ -25,6 +25,14 @@ const services = [
   {
     route: "/puzzle",
     target: process.env.PUZZLE_BASEURL +  "/puzzle/",
+  },
+  {
+    route: "/leaderboard",
+    target: process.env.LEADERBOARD_BASEURL +  "/leaderboard/",
+  },
+  {
+    route: "/results",
+    target: process.env.RESULTS_BASEURL +  "/results/",
   },
   // Add more services as needed either deployed or locally.
  ];
