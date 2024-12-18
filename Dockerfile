@@ -16,11 +16,8 @@ RUN pnpm install --frozen-lockfile
 # Step 6: Copy the rest of the application files
 COPY . .
 
-# Step 7: Build the application (if applicable)
-RUN pnpm run build
-
-# Step 8: Expose the port the app runs on
+# Step 7: Expose the port the app runs on
 EXPOSE 3000
 
-# Step 9: Start the app
+# Step 8: Start the app
 CMD ["pnpm", "start"]
