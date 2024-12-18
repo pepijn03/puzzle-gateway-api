@@ -4,6 +4,8 @@ const {setupLogging} = require("./logging.js");
 const cors = require("cors");
 const helmet = require("helmet");
 const { createProxyMiddleware } = require("http-proxy-middleware");
+const { authenticateToken } = require('./auth-middleware'); // Import JWT middleware
+
 // Load the dotenv dependency and call the config method on the imported object
 require('dotenv').config();
 
@@ -17,27 +19,31 @@ const services = [
   {
     route: "/users",
     target: process.env.USER_BASEURL +  "/users/",
+    requireAuth: true // Indicates if route requires authentication
   },
   {
     route: "/progress",
     target: process.env.PROGRESS_BASEURL +  "/progess/",
+    requireAuth: true // Indicates if route requires authentication
   },
   {
     route: "/puzzle",
     target: process.env.PUZZLE_BASEURL +  "/puzzle/",
+    requireAuth: true // Indicates if route requires authentication
   },
   {
     route: "/leaderboard",
     target: process.env.LEADERBOARD_BASEURL +  "/leaderboard/",
+    requireAuth: true // Indicates if route requires authentication
   },
   {
     route: "/results",
     target: process.env.RESULTS_BASEURL +  "/results/",
+    requireAuth: true // Indicates if route requires authentication
   },
   // Add more services as needed either deployed or locally.
  ];
 
- 
 // Define rate limit constants
 const rateLimit = 20; // Max requests per minute
 const interval = 60 * 1000; // Time window in milliseconds (1 minute)
@@ -89,7 +95,7 @@ function rateLimitAndTimeout(req, res, next) {
 router.use(rateLimitAndTimeout);
 
 // Set up proxy middleware for each microservice
-services.forEach(({ route, target }) => {
+services.forEach(({ route, target, requireAuth = false }) => {
   // Proxy options
   const proxyOptions = {
     target,
@@ -99,8 +105,13 @@ services.forEach(({ route, target }) => {
     },
   };
 
-  // Apply rate limiting and timeout middleware before proxying
-  router.use(route, rateLimitAndTimeout, createProxyMiddleware(proxyOptions));
+  // If route requires authentication, add JWT middleware
+  if (requireAuth) {
+    router.use(route, rateLimitAndTimeout, authenticateToken, createProxyMiddleware(proxyOptions));
+  } else {
+    // Public routes don't need authentication
+    router.use(route, rateLimitAndTimeout, createProxyMiddleware(proxyOptions));
+  }
 });
 
 /* GET home page. */
