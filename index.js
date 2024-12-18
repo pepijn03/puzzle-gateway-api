@@ -33,7 +33,7 @@ const services = [
   },
   {
     route: "/leaderboard",
-    target: process.env.LEADERBOARD_BASEURL +  "/leaderboard/",
+    target: process.env.LEADERBOARD_BASEURL,
     requireAuth: true // Indicates if route requires authentication
   },
   {
