@@ -7,22 +7,25 @@ const { generateToken } = require('./auth-middleware');
 const users = [
   {
     id: 1,
-    username: 'testuser',
-    // Hashed password for 'password123'
-    password: "password123"
+    username: 'admin',
+    password: 'StrongPassword123',
+    roles: ['admin', 'user']
+  },
+  {
+    id: 2,
+    username: 'user',
+    password: 'Password123',
+    roles: ['user']
   }
 ];
 
 router.post('/login', async (req, res) => {
   const { username, password } = req.body;
 
-  console.log('Login attempt:', { username, password }); // Debug logging
-
   // Find user
   const user = users.find(u => u.username === username);
 
   if (!user) {
-    console.log('User not found'); // Debug logging
     return res.status(401).json({
       code: 401,
       status: 'Error',
@@ -30,27 +33,25 @@ router.post('/login', async (req, res) => {
       data: null
     });
   }
-  const hashedpass = await bcrypt.hash('password123', 10);
 
   try {
     // Compare passwords
-    const isMatch = await bcrypt.compare(password, hashedpass);
-
-    console.log('Password comparison result:', isMatch); // Debug logging
+    const isMatch = await password.localeCompare(user.password);
 
     if (!isMatch) {
       return res.status(401).json({
         code: 401,
         status: 'Error',
-        message: 'Invalid credentials',
+        message: 'Invalid credentials!',
         data: null
       });
     }
 
-    // Generate JWT token
+    // Generate JWT token with user roles
     const token = generateToken({ 
       id: user.id, 
-      username: user.username 
+      username: user.username,
+      roles: user.roles  // Include roles in the token
     });
 
     res.json({
@@ -60,7 +61,7 @@ router.post('/login', async (req, res) => {
       data: { token }
     });
   } catch (error) {
-    console.error('Login error:', error); // Error logging
+    console.error('Login error:', error);
     res.status(500).json({
       code: 500,
       status: 'Error',
