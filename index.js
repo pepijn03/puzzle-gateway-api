@@ -67,7 +67,7 @@ const services = [
  ];
  
 // Define rate limit constants
-const rateLimit = 20; // Max requests per minute
+const rateLimit = 35; // Max requests per minute
 const interval = 60 * 1000; // Time window in milliseconds (1 minute)
 
 // Object to store request counts for each IP address
